@@ -1,0 +1,423 @@
+gNB: has added UE RRC connection 832947102
+gNB: has added UE NGAP connection 832947102
+Failed to load HN public key, a temporary key will be used: HN public key not configured
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[832947102]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected￯ﾼﾌsend NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[832947102]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+Attack: record first RAND||AUTN (len=30)
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed ￢ﾆﾒ return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete￯ﾼﾈProtected￯ﾼﾉ
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456001,true,0,2025-10-31T10:16:27.587882Z
+gNB: has added UE RRC connection 1270855946
+gNB: has added UE NGAP connection 1270855946
+Failed to load HN public key, a temporary key will be used: HN public key not configured
+Attack: towards UEChannel 448684718 replay Authentication Request
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[1270855946]: receive RRC Setup Request
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected￯ﾼﾌsend NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[1270855946]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed ￢ﾆﾒ return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete￯ﾼﾈProtected￯ﾼﾉ
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456002,true,0,2025-10-31T10:16:30.571414Z
+gNB: has added UE RRC connection 1518864111
+gNB: has added UE NGAP connection 1518864111
+Failed to load HN public key, a temporary key will be used: HN public key not configured
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[1518864111]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected￯ﾼﾌsend NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[1518864111]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed ￢ﾆﾒ return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete￯ﾼﾈProtected￯ﾼﾉ
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456003,true,0,2025-10-31T10:16:31.070838Z
+Attack: towards UEChannel 448684718 replay Authentication Request
+Attack: towards UEChannel 343515017 replay Authentication Request
+Attack: towards UEChannel 273025502 replay Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Authentication Request
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+UE: handle Authentication Request
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+Attack: towards UEChannel 448684718 replay Authentication Request
+Attack: towards UEChannel 343515017 replay Authentication Request
+Attack: towards UEChannel 273025502 replay Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Authentication Request
+UE NGAP: receive DownlinkNASTransport
+UE: handle Authentication Request
+UE NAS: receive Authentication Request
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+UE: handle Authentication Request
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+UE NAS: build Authentication Failure, type=0x06
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NGAP: send UplinkNASTransport
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+Attack: towards UEChannel 448684718 replay Authentication Request
+Attack: towards UEChannel 343515017 replay Authentication Request
+Attack: towards UEChannel 273025502 replay Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+UE NAS: receive Authentication Request
+UE NGAP: receive DownlinkNASTransport
+UE: handle Authentication Request
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Authentication Request
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+UE: handle Authentication Request
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+Attack: towards UEChannel 448684718 replay Authentication Request
+Attack: towards UEChannel 343515017 replay Authentication Request
+Attack: towards UEChannel 273025502 replay Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Authentication Request
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+UE: handle Authentication Request
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+Attack: towards UEChannel 448684718 replay Authentication Request
+Attack: towards UEChannel 343515017 replay Authentication Request
+Attack: towards UEChannel 273025502 replay Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Authentication Request
+UE NGAP: receive DownlinkNASTransport
+UE: handle Authentication Request
+UE NAS: receive Authentication Request
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+UE: handle Authentication Request
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+SEC: SQN Verification failed ￢ﾆﾒ return Sync Failure + AUTS
+UE NAS: build Authentication Failure, type=0x06
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: unknown NAS type=6
+AMF: unknown NAS type=6
+PhysicalChannel: uplink forward to gNB NGAP
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NGAP: receive DownlinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+=== Simulation ended ===

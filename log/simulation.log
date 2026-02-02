@@ -1,0 +1,784 @@
+
+============================================================
+SUCI 随机性对比仿真开始
+============================================================
+gNB: has added UE RRC connection 1791930789
+gNB: has added UE NGAP connection 1791930789
+------------------------------------------------------------
+[UE-0] SUCI 生成阶段：
+   IMSI = imsi-001010123456001
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004FC78322B6C9D0E5352260910C8:MjkOnj4euEIYDFweqPfu8gDAqG8=
+使用弱随机源（低熵），R 部分可能重复，匿名性风险存在！
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[1791930789]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[1791930789]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456001,true,0,2026-01-15T07:54:09.646630Z
+gNB: has added UE RRC connection 574268151
+gNB: has added UE NGAP connection 574268151
+------------------------------------------------------------
+[UE-1] SUCI 生成阶段：
+   IMSI = imsi-001010123456002
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004854F1213AEB4EF9D3D269FB453:NaXAPpqcPwSkLHvjLUlxtH2SA4Y=
+使用强随机源（高熵），SUCI 唯一且不可预测。
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[574268151]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[574268151]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456002,true,0,2026-01-15T07:54:10.444618Z
+gNB: has added UE RRC connection 552936351
+gNB: has added UE NGAP connection 552936351
+------------------------------------------------------------
+[UE-2] SUCI 生成阶段：
+   IMSI = imsi-001010123456003
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004FC78322B6C9D0E5352260910C8:qzT9co3DxXo3ENm790cWrqT8GdE=
+使用弱随机源（低熵），R 部分可能重复，匿名性风险存在！
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[552936351]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[552936351]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456003,true,0,2026-01-15T07:54:11.246936Z
+gNB: has added UE RRC connection 154319946
+gNB: has added UE NGAP connection 154319946
+------------------------------------------------------------
+[UE-3] SUCI 生成阶段：
+   IMSI = imsi-001010123456004
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004208F1309F540575A830EECF021:XlSCL4klvLX9tjd++wF+KqmXokg=
+使用强随机源（高熵），SUCI 唯一且不可预测。
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[154319946]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[154319946]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456004,true,0,2026-01-15T07:54:12.046922Z
+gNB: has added UE RRC connection 702061917
+gNB: has added UE NGAP connection 702061917
+------------------------------------------------------------
+[UE-4] SUCI 生成阶段：
+   IMSI = imsi-001010123456005
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004FC78322B6C9D0E5352260910C8:fPVqscpOvWRdEl7hhmfuxbN58l4=
+使用弱随机源（低熵），R 部分可能重复，匿名性风险存在！
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[702061917]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[702061917]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456005,true,0,2026-01-15T07:54:12.849109Z
+gNB: has added UE RRC connection 71706941
+gNB: has added UE NGAP connection 71706941
+------------------------------------------------------------
+[UE-5] SUCI 生成阶段：
+   IMSI = imsi-001010123456006
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D030107034200044F12FFDE75CFAB95629D42F27D:EklQSbnLJEIB3ySdVerrrhee8Ns=
+使用强随机源（高熵），SUCI 唯一且不可预测。
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[71706941]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[71706941]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456006,true,0,2026-01-15T07:54:13.651959Z
+gNB: has added UE RRC connection 363509958
+gNB: has added UE NGAP connection 363509958
+------------------------------------------------------------
+[UE-6] SUCI 生成阶段：
+   IMSI = imsi-001010123456007
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004FC78322B6C9D0E5352260910C8:4iFqDIWapi2kOK8ZCFRgsJeSH1k=
+使用弱随机源（低熵），R 部分可能重复，匿名性风险存在！
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[363509958]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[363509958]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456007,true,0,2026-01-15T07:54:14.454954Z
+gNB: has added UE RRC connection 1354083458
+gNB: has added UE NGAP connection 1354083458
+------------------------------------------------------------
+[UE-7] SUCI 生成阶段：
+   IMSI = imsi-001010123456008
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004F6786E389F0A826F06E84783EA:L/hCCjGXw2a2zWanpbxp1D/Ygww=
+使用强随机源（高熵），SUCI 唯一且不可预测。
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[1354083458]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[1354083458]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456008,true,0,2026-01-15T07:54:15.257228Z
+gNB: has added UE RRC connection 1068586139
+gNB: has added UE NGAP connection 1068586139
+------------------------------------------------------------
+[UE-8] SUCI 生成阶段：
+   IMSI = imsi-001010123456009
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004FC78322B6C9D0E5352260910C8:ZaIrzGTramIQ7EPtLLQHQuoFLz8=
+使用弱随机源（低熵），R 部分可能重复，匿名性风险存在！
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[1068586139]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[1068586139]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456009,true,0,2026-01-15T07:54:16.059050Z
+gNB: has added UE RRC connection 726181440
+gNB: has added UE NGAP connection 726181440
+------------------------------------------------------------
+[UE-9] SUCI 生成阶段：
+   IMSI = imsi-001010123456010
+   SUCI = 3059301306072A8648CE3D020106082A8648CE3D03010703420004596D9772F29FB0A054B74E1658:ccmiCnqF+5B+Sv8rTIjYZ8b7ahQ=
+使用强随机源（高熵），SUCI 唯一且不可预测。
+------------------------------------------------------------
+SM: Current States => RRC=IDLE, NAS=UNREGISTERED
+=== UE start ===
+SM: RRC -> CONNECTING
+SM: Current States => RRC=CONNECTING, NAS=UNREGISTERED
+UE RRC: send RRC Setup Request
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Request
+gNB RRC: send RRC Setup
+gNB[726181440]: receive RRC Setup Request
+PhysicalChannel: downlink forward to UE RRC/NGAP
+UE RRC: receive RRC Setup
+UE RRC: send RRC Setup Complete
+TimerManager: cancel timer T3560
+UE: RRC connected，send NAS Registration Request
+SM: RRC -> CONNECTED
+SM: Current States => RRC=CONNECTED, NAS=UNREGISTERED
+SM: NAS -> REGISTRATION_PENDING
+SM: Current States => RRC=CONNECTED, NAS=REGISTRATION_PENDING
+UE NAS: build Registration Request, seq=0
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3560, Timeout=5000ms
+PhysicalChannel: downlink forward to UE RRC/NGAP
+gNB RRC: receive RRC Setup Complete
+gNB[726181440]: RRC connection completed
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Registration Request
+AUSF: Generate complete Authentication Request
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3560
+UE NAS: receive Authentication Request
+UE: handle Authentication Request
+SEC: derive kAmf, knasEnc, knasInt (based CK/IK)
+SEC: Certification passed → return RES
+UE NAS: build Authentication Response, seq=1
+UE NGAP: send UplinkNASTransport
+TimerManager: start timer T3561, Timeout=5000ms
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Authentication Response
+AMF: RES Verification passed
+AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command
+AMF: send Security Mode Command
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+TimerManager: cancel timer T3561
+UE NAS: receive Security Mode Command
+UE: handle Security Mode Command
+UE: 5G-AKA Authentication completed, secure mode is about to be activated.
+SEC: Handle safe mode commands and activate safety
+UE NAS: build Security Mode Complete(security protect), seq=2
+UE NGAP: send UplinkNASTransport
+PhysicalChannel: uplink forward to gNB NGAP
+gNB NGAP: receive uplink NAS, forward to AMF
+AMF: receive Security Mode Complete（Protected）
+AMF: send Registration Accept
+PhysicalChannel: uplink forward to gNB NGAP
+UE NGAP: receive DownlinkNASTransport
+UE NAS: receive Registration Accept
+UE: handle Registration Accept
+SM: NAS -> REGISTERED
+SM: Current States => RRC=CONNECTED, NAS=REGISTERED
+SM: NAS -> SECURITY_ACTIVE
+SM: Current States => RRC=CONNECTED, NAS=SECURITY_ACTIVE
+UE: Registration completed successfully
+RegistrationManager: record ->imsi-001010123456010,true,0,2026-01-15T07:54:16.863127Z
+
+====================== 弱随机 SUCI 分析阶段 ======================
+检测到 SUCI 公钥前缀重复 → 这些UE可能属于同一随机源：
+   ↳ imsi-001010123456001
+   ↳ imsi-001010123456002
+   ↳ imsi-001010123456003
+   ↳ imsi-001010123456004
+   ↳ imsi-001010123456005
+   ↳ imsi-001010123456006
+   ↳ imsi-001010123456007
+   ↳ imsi-001010123456008
+   ↳ imsi-001010123456009
+   ↳ imsi-001010123456010
+弱随机导致部分 UE 的 SUCI 公钥前缀相同，匿名性丧失。
+=================================================================
+
+============================================================
+SUCI 随机性对比仿真结束
+============================================================
+=== SUCI Simulation End ===
