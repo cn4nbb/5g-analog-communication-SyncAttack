@@ -12,6 +12,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import entity.CoreNet.Milenage;
+
+import static org.bouncycastle.pqc.math.linearalgebra.ByteUtils.xor;
 
 public class SecurityContext {
     //KDF链，密钥管理。MAC/ENC
@@ -22,10 +25,26 @@ public class SecurityContext {
     private byte[] knasInt;
     private final SecureRandom random = new SecureRandom();
     private boolean securityActivated = false;
-    public SecurityContext(byte[] kAusf) {
-        this.kAusf = kAusf;
+    private Milenage milenage;
+    private final byte[] opVariant;
+
+    private byte[] ck;
+    private byte[] ik;
+
+    // 记录 UE 最后一次接受的网络 SQN（用于 Sync Failure 检测）
+    private long lastSeenSqn = -1;
+
+    public SecurityContext(byte[] kAusf, byte[] opVariant) {
+        if (kAusf.length != 16 || opVariant.length != 16)
+            throw new IllegalArgumentException("kAusf and opVariant must be 16 字节");
+        this.kAusf      = Arrays.copyOf(kAusf, 16);
+        this.opVariant  = Arrays.copyOf(opVariant, 16);
+        this.milenage   = new Milenage(this.kAusf, this.opVariant);
     }
 
+    public void initMil(byte[] K, byte[] OP) {
+        this.milenage = new Milenage(K,OP);
+    }
     /**
      * 执行 KDF 链生成 AMF 和 NAS 密钥
      */
@@ -36,7 +55,7 @@ public class SecurityContext {
         this.knasEnc = kdf(concat(kAmf, "nasEnc".getBytes()), 16);
         // kNasInt = KDF(kAmf||"nasInt")
         this.knasInt = kdf(concat(kAmf, "nasInt".getBytes()), 16);
-        System.out.println("SEC: 派生 kAmf, knasEnc, knasInt");
+        System.out.println("SEC: derive kAmf, knasEnc, knasInt");
     }
 
     /**
@@ -82,25 +101,55 @@ public class SecurityContext {
     }
 
     /**
-     * UE 根据 Authentication Request 中的 RAND、AUTN 验证并计算 RES
-     * @param rand 从事件中获取的 RAND
+     * UE 根据 Authentication Request 中的 RAND、AUTN 进行条件检查：
+     *   - MAC 校验失败 → return MAC Failure (0x04)
+     *   - SQN 重放或过期 → return Sync Failure (0x06||AUTS)
+     *   - 否则正常return RES
      */
-    public byte[] computeAuthenticationResponse(byte[] rand) {
-        // 派生所有密钥
-        deriveKeys(rand);
-        // 简化示例：RES = HMAC(kAmf, rand)
-        try {
-            Mac mac = Mac.getInstance("HmacSHA256");
-            SecretKeySpec key = new SecretKeySpec(kAmf, "HmacSHA256");
-            mac.init(key);
-            byte[] res = mac.doFinal(rand);
-            System.out.println("SEC: 计算 RES 返回 UE Authentication Response");
-            return res;
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+    public byte[] computeAuthenticationResponse(byte[] rand,byte[] autn) {
+        // 1) 恢复网络 SQN
+        long sqnNet = milenage.extractSqn(rand, autn);
+        // 2) 生成向量便于校验
+        Milenage.AuthVector vec = milenage.generateAuthVectorWithRand(rand, sqnNet);
+
+        // 3) MAC-A 校验 (f1)
+        //byte[] computedMac = Arrays.copyOf(vec.AUTN, 8);      // 前 8 字节是 MAC-A
+        byte[] computedMac = Arrays.copyOfRange(vec.AUTN, 6, 14);
+        byte[] recvMac     = Arrays.copyOfRange(autn, 6, 14);
+        if (!Arrays.equals(computedMac, recvMac)) {
+            System.out.println("SEC: MAC Verification failed → return MAC Failure");
+            return new byte[]{0x04};  // NAS MAC Failure
         }
+
+        // 4) SQN 校验：如果 sqnNet <= lastSeenSqn，视为重放
+        if (sqnNet <= lastSeenSqn) {
+            // 生成 AUTS，return Sync Failure
+            byte[] auts = milenage.generateAUTS(sqnNet);
+            byte[] msg = new byte[1 + auts.length];
+            msg[0] = 0x06;  // NAS Sync Failure
+            System.arraycopy(auts, 0, msg, 1, auts.length);
+            System.out.println("SEC: SQN Verification failed → return Sync Failure + AUTS");
+            return msg;
+        }
+
+        // 5) 校验通过，更新 lastSeenSqn，正常生成 RES
+        lastSeenSqn = sqnNet;
+        // 按原逻辑保存 CK/IK 并派生 NAS 密钥
+        this.ck = vec.CK; this.ik = vec.IK;
+        deriveKeysWithCKIK(ck, ik);
+        System.out.println("SEC: Certification passed → return RES");
+        return vec.XRES;
     }
 
+    /** 用 CK/IK 生成 KAMF、KNAS-ENC、KNAS-INT */
+    private void deriveKeysWithCKIK(byte[] ck, byte[] ik) {
+        // 真实 KDF 是 TS 33.501 里定义的 nccf 链，这里简化：
+        byte[] kamf = kdf(concat(ck, ik), 32);
+        this.kAmf   = kamf;
+        this.knasEnc= kdf(concat(kAmf, "nasEnc".getBytes()), 16);
+        this.knasInt= kdf(concat(kAmf, "nasInt".getBytes()), 16);
+        System.out.println("SEC: derive kAmf, knasEnc, knasInt (based CK/IK)");
+    }
     // 工具方法：简单 KDF
     private byte[] kdf(byte[] input, int length) {
         try {
@@ -130,7 +179,7 @@ public class SecurityContext {
 
     public void activateSecurity() {
         this.securityActivated = true;
-        System.out.println("SEC: 安全上下文已激活");
+        System.out.println("SEC: Security context has been activated");
     }
 
     public boolean isSecurityActivated() {
@@ -141,6 +190,7 @@ public class SecurityContext {
     public void handleSecurityModeCommand(byte[] securityHeader) {
         // 解析安全头并激活安全
         this.securityActivated = true;
-        System.out.println("SEC: 处理安全模式命令，激活安全");
+        System.out.println("SEC: Handle safe mode commands and activate safety");
     }
+
 }

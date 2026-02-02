@@ -1,4 +1,5 @@
 package entity;
+import entity.Ue.register.RegistrationListener;
 import entity.Ue.nas.NasLayer;
 import entity.Ue.ngap.NgapLayer;
 
@@ -28,8 +29,15 @@ public class UEs {
     private final PhysicalChannel  upControl;    // UE -> gNB
     private final PhysicalChannel  downControl;  // gNB -> UE
 
+    //新增注册监视器
+    private RegistrationListener registrationListener;
+
+    public void registerRegistrationListener(RegistrationListener listener) {
+        this.registrationListener = listener;
+    }
     public UEs(String supi,
                byte[] masterKey,
+               byte[] opVariant,
                PhysicalChannel downControl,
                PhysicalChannel upControl,
                PhysicalLayer userPhy) {
@@ -38,7 +46,7 @@ public class UEs {
         this.downControl = downControl;
 
         this.suciGenerator  = new SuciGenerator(supi);
-        this.securityContext= new SecurityContext(masterKey);
+        this.securityContext= new SecurityContext(masterKey,opVariant);
         this.stateMachine   = new StateMachine();
         this.timerManager   = new TimerManager();
         this.plmnSelector   = new PlmnSelector();
@@ -69,7 +77,7 @@ public class UEs {
     }
 
     public void start() {
-        System.out.println("=== UE 启动 ===");
+        System.out.println("=== UE start ===");
         stateMachine.toRrcConnecting();
         rrcLayer.initiateRrcSetup();
     }
@@ -82,7 +90,7 @@ public class UEs {
 //        byte[] regReq = nasLayer.buildRegistrationRequest(suci);
 //        ngapLayer.sendUplinkNas(regReq);
 //        timerManager.startTimer(TimerManager.T3560);
-        System.out.println("UE: RRC 已连接，发送 NAS 注册请求");
+        System.out.println("UE: RRC connected，send NAS Registration Request");
         stateMachine.toRrcConnected();
         stateMachine.toRegistrationPending();
         byte[] suci = suciGenerator.generate();
@@ -94,21 +102,24 @@ public class UEs {
     private void onNasEvent(NasLayer.Event event) {
         switch (event.getType()) {
             case AUTHENTICATION_REQUEST:
-                System.out.println("UE: 处理 Authentication Request");
-                byte[] authRes = securityContext.computeAuthenticationResponse(event.getRand());
-                byte[] authRespMsg = nasLayer.buildAuthResponse(authRes);
-                ngapLayer.sendUplinkNas(authRespMsg);
-                timerManager.startTimer(TimerManager.T3561); // 启动认证响应定时器
+                System.out.println("UE: handle Authentication Request");
+                byte[] authRes = securityContext.computeAuthenticationResponse(
+                        event.getRand(), event.getAutn());
+                // 如果 authRes[0] == 0x04 或 0x06，表示失败
+                if (authRes.length > 0 && (authRes[0] == 0x04 || authRes[0] == 0x06)) {
+                    // 构建并发送 Failure 消息
+                    byte[] failureMsg = nasLayer.buildAuthFailure(authRes);
+                    ngapLayer.sendUplinkNas(failureMsg);
+                } else {
+                    // 正常 Authentication Response
+                    byte[] authRespMsg = nasLayer.buildAuthResponse(authRes);
+                    ngapLayer.sendUplinkNas(authRespMsg);
+                    timerManager.startTimer(TimerManager.T3561);
+                }
                 break;
             case SECURITY_MODE_COMMAND:
-//                System.out.println("UE: 处理 Security Mode Command");
-//                // 设置安全头并发送完成响应
-//                securityContext.createNasSecurityHeader(nasLayer.getCurrentSequence(), true);
-//                byte[] secModeComplete = nasLayer.buildSecurityModeComplete();
-//                ngapLayer.sendUplinkNas(secModeComplete);
-//                stateMachine.toSecurityActive();
-//                break;
-                System.out.println("UE: 处理 Security Mode Command");
+                System.out.println("UE: handle Security Mode Command");
+                System.out.println("UE: 5G-AKA Authentication completed, secure mode is about to be activated.");
                 // 激活安全上下文
                 securityContext.handleSecurityModeCommand(event.getSecurityHeader());
                 byte[] secModeComplete = nasLayer.buildSecurityModeComplete();
@@ -116,18 +127,23 @@ public class UEs {
                 // 注意：这里不改变状态，等待Registration Accept
                 break;
             case REGISTRATION_ACCEPT:
-//                System.out.println("UE: 处理 Registration Accept");
-//                stateMachine.toRegistered();
-//                System.out.println("UE: 注册成功完成");
-//                break;
-                System.out.println("UE: 处理 Registration Accept");
+
+                System.out.println("UE: handle Registration Accept");
                 stateMachine.toRegistered();
                 stateMachine.toSecurityActive(); // 安全激活
-                System.out.println("UE: 注册成功完成");
+                System.out.println("UE: Registration completed successfully");
+                //通知外部
+                if(registrationListener != null) {
+                    registrationListener.onRegistrationResult(supi, true, 0);
+                }
                 break;
             case REGISTRATION_REJECT:
-                System.out.println("UE: 处理 Registration Reject");
+                System.out.println("UE: handle Registration Reject");
                 plmnSelector.handleReject(event.getRejectCause());
+                //通知外部
+                if(registrationListener != null) {
+                    registrationListener.onRegistrationResult(supi,false,event.getRejectCause());
+                }
                 break;
         }
     }

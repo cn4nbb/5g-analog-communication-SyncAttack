@@ -1,21 +1,14 @@
 package entity.CoreNet;
 
-import javax.crypto.Cipher;
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
 public class Amf {
     private final Ausf ausf;
+    private final Udm udm;
 
-
-    public Amf(Ausf ausf) {
+    public Amf(Ausf ausf, Udm udm) {
         this.ausf = ausf;
+        this.udm = udm;
     }
 
     /**
@@ -23,40 +16,50 @@ public class Amf {
      */
     public byte[] handleUplinkNas(byte[] nas) {
         if (nas.length > 0 && (nas[0] & 0xFF) == 0x7E) {
-            System.out.println("AMF: 收到 Security Mode Complete（受保护）");
+            System.out.println("AMF: receive Security Mode Complete（Protected）");
             // 简化：直接回复 Registration Accept
             return buildRegistrationAccept();
         }
         byte msgType = nas[0];
-
+        byte[] res;
         switch (msgType) {
             case 0x01: // Registration Request
-                System.out.println("AMF: 收到 Registration Request");
+                System.out.println("AMF: receive Registration Request");
                 // 只打印前16字节避免乱码
-                String suciPreview = nas.length > 16 ?
-                        new String(Arrays.copyOfRange(nas, 1, 17)) :
-                        new String(Arrays.copyOfRange(nas, 1, nas.length));
-                System.out.println("AMF: 处理 SUCI(预览): " + suciPreview);
-                return buildAuthenticationRequest();
-            case 0x03: // Authentication Response
-                System.out.println("AMF: 收到 Authentication Response");
-                // 验证RES（简化验证）
-                if (nas.length > 1) {
-                    byte[] res = Arrays.copyOfRange(nas, 1, nas.length);
+                return ausf.authenticate();
+            case 0x02: //Authentication Response(RES)
+                System.out.println("AMF: receive Authentication Response");
+                res = Arrays.copyOfRange(nas,1,nas.length);
+                if(udm.verifyXres(res)){
+                    System.out.println("AMF: RES Verification passed");
                     return buildSecurityModeCommand();
+                }else {
+                    System.out.println("AMF: RES Verification failed, registration denied");
+                    return buildRegistrationReject((byte)8);
                 }
-                return new byte[0];
+            case 0x03: // Authentication Response(RES) from UE
+                System.out.println("AMF: receive Authentication Response");
+                res = Arrays.copyOfRange(nas,1,nas.length);
+                if(udm.verifyXres(res)){
+                    System.out.println("AMF: RES Verification passed");
+                    System.out.println("AMF: 5G-AKA Authentication successful, preparing to send Security Mode Command");
+                    return buildSecurityModeCommand();
+                }else {
+                    System.out.println("AMF: RES Verification failed, registration denied");
+                    return buildRegistrationReject((byte)8);
+                }
+
             case (byte) 0x5E: // Security Mode Complete
-                System.out.println("AMF: 收到 Security Mode Complete");
+                System.out.println("AMF: receive Security Mode Complete");
                 return buildRegistrationAccept();
             default:
-                System.out.println("AMF: 未知 NAS 类型=" + (msgType & 0xFF));
+                System.out.println("AMF: unknown NAS type=" + (msgType & 0xFF));
                 return new byte[0];
         }
     }
 
     private byte[] buildSecurityModeCommand() {
-        System.out.println("AMF: 发送 Security Mode Command");
+        System.out.println("AMF: send Security Mode Command");
         // 0x5C = Security Mode Command
 //        return new byte[]{ (byte)0x5C };
         byte[] secHeader = new byte[]{0x5C, 0x00, 0x00, 0x00, 0x00, 0x00}; // 简化安全头
@@ -64,12 +67,12 @@ public class Amf {
     }
 
     private byte[] buildRegistrationAccept() {
-        System.out.println("AMF: 发送 Registration Accept");
+        System.out.println("AMF: send Registration Accept");
         // 0x41 = Registration Accept
         return new byte[]{ 0x41 };
     }
     private byte[] buildAuthenticationRequest() {
-        System.out.println("AMF: 发送 Authentication Request");
+        System.out.println("AMF: send Authentication Request");
         // 0x02 = Authentication Request
         // 添加RAND (16字节)
         byte[] rand = new byte[16];
@@ -80,7 +83,10 @@ public class Amf {
         System.arraycopy(rand, 0, msg, 1, rand.length);
         return msg;
     }
-
+    private byte[] buildRegistrationReject(byte cause) {
+        System.out.println("AMF: send Registration Reject, cause=" + cause);
+        return new byte[]{0x42, cause};
+    }
 
 
 }

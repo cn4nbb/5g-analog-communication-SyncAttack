@@ -20,20 +20,23 @@ public class NasLayer {
     public static class Event {
         private final EventType type;
         private final byte[] rand;
+        private final byte[] autn;
         private final byte[] securityHeader;
         private final int rejectCause;
 
-        public Event(EventType type, byte[] rand, byte[] securityHeader, int rejectCause) {
+        public Event(EventType type, byte[] rand, byte[] autn, byte[] securityHeader,int rejectCause) {
             this.type = type;
             this.rand = rand;
-            this.securityHeader = securityHeader;
+            this.autn = autn;
             this.rejectCause = rejectCause;
+            this.securityHeader = securityHeader;
         }
 
         public EventType getType() { return type; }
         public byte[] getRand() { return rand; }
-        public byte[] getSecurityHeader() { return securityHeader; }
+        public byte[] getAutn() { return autn; }
         public int getRejectCause() { return rejectCause; }
+        public byte[] getSecurityHeader() { return securityHeader; }
     }
 
     private final SecurityContext securityContext;
@@ -54,53 +57,43 @@ public class NasLayer {
     }
 
     /**
-     * 构建 Registration Request NAS 消息
+     * build Registration Request NAS 消息
      */
     public byte[] buildRegistrationRequest(byte[] suci) {
         byte[] header = new byte[]{0x01, (byte) (nasSequence++)};
         byte[] message = concat(header, suci);
-        System.out.println("UE NAS: 构建 Registration Request, seq=" + (nasSequence - 1));
+        System.out.println("UE NAS: build Registration Request, seq=" + (nasSequence - 1));
         return message;
+    }
+    public byte[] buildAuthFailure(byte[] failMsg) {
+        System.out.printf("UE NAS: build Authentication Failure, type=0x%02X%n", failMsg[0]);
+        return failMsg;
     }
 
     public byte[] buildAuthResponse(byte[] authRes) {
-//        byte[] secHeader = securityContext.createNasSecurityHeader(nasSequence++, false);
-//        byte[] protectedMsg = securityContext.protectNas(secHeader, authRes);
-//        System.out.println("UE NAS: 构建 Authentication Response, seq=" + (nasSequence - 1));
-//        return protectedMsg;
         byte[] message = new byte[1 + authRes.length];
         message[0] = 0x03; // Authentication Response 类型
         System.arraycopy(authRes, 0, message, 1, authRes.length);
-        System.out.println("UE NAS: 构建 Authentication Response, seq=" + (nasSequence++));
+        System.out.println("UE NAS: build Authentication Response, seq=" + (nasSequence++));
         return message;
     }
 
     public byte[] buildSecurityModeComplete() {
-//        byte[] secHeader = securityContext.createNasSecurityHeader(nasSequence++, true);
-//        byte[] body = new byte[]{0x5E};
-//        byte[] protectedMsg = securityContext.protectNas(secHeader, body);
-//        System.out.println("UE NAS: 构建 Security Mode Complete, seq=" + (nasSequence - 1));
-//        return protectedMsg;
-//        byte[] secHeader = securityContext.createNasSecurityHeader(nasSequence++, true);
-//        byte[] body = new byte[]{0x5E}; // Security Mode Complete 类型
-//        byte[] protectedMsg = securityContext.protectNas(secHeader, body);
-//        System.out.println("UE NAS: 构建 Security Mode Complete, seq=" + (nasSequence - 1));
-//        return protectedMsg;
         if (securityContext.isSecurityActivated()) {
             byte[] secHeader = securityContext.createNasSecurityHeader(nasSequence++, true);
             byte[] body = new byte[]{0x5E}; // Security Mode Complete 类型
             byte[] protectedMsg = securityContext.protectNas(secHeader, body);
-            System.out.println("UE NAS: 构建 Security Mode Complete(安全保护), seq=" + (nasSequence - 1));
+            System.out.println("UE NAS: build Security Mode Complete(security protect), seq=" + (nasSequence - 1));
             return protectedMsg;
         } else {
             // 安全激活前发送未保护的消息
-            System.out.println("UE NAS: 构建 Security Mode Complete(未保护), seq=" + nasSequence);
+            System.out.println("UE NAS: build Security Mode Complete(unprotected), seq=" + nasSequence);
             return new byte[]{0x5E};
         }
     }
 
     /**
-     * 处理接收到的 NAS 消息字节
+     * 处理接receive的 NAS 消息字节
      */
     public void handleIncoming(byte[] rawPayload) {
         timerManager.stopActiveTimers();
@@ -108,34 +101,35 @@ public class NasLayer {
 
         switch (msgType) {
             case 0x02: // Authentication Request
-                if (rawPayload.length >= 17) {
-                    byte[] rand = Arrays.copyOfRange(rawPayload, 1, 17);
-                    System.out.println("UE NAS: 收到 Authentication Request");
-                    timerManager.cancelTimer(TimerManager.T3560); // 取消注册定时器
-                    callback.accept(new Event(EventType.AUTHENTICATION_REQUEST, rand, null, 0));
+                if (rawPayload.length >= 1 + 16 + 14) {
+                    byte[] rand = Arrays.copyOfRange(rawPayload, 1, 1 + 16);
+                    byte[] autn = Arrays.copyOfRange(rawPayload, 1 + 16, 1 + 16 + 14);
+                    System.out.println("UE NAS: receive Authentication Request");
+                    timerManager.cancelTimer(TimerManager.T3560);
+                    callback.accept(new Event(EventType.AUTHENTICATION_REQUEST, rand, autn, null,0));
                 }
                 break;
             case (byte) 0x5C: // Security Mode Command
-                System.out.println("UE NAS: 收到 Security Mode Command");
+                System.out.println("UE NAS: receive Security Mode Command");
                 if (rawPayload.length >= 6) {
                     byte[] secHeader = Arrays.copyOfRange(rawPayload, 0, 6);
-                    callback.accept(new Event(EventType.SECURITY_MODE_COMMAND, null, secHeader, 0));
+                    callback.accept(new Event(EventType.SECURITY_MODE_COMMAND, null, null,secHeader, 0));
                 }
                 break;
             case 0x41: // Registration Accept
-                System.out.println("UE NAS: 收到 Registration Accept");
+                System.out.println("UE NAS: receive Registration Accept");
                 timerManager.cancelTimer(TimerManager.T3561); // 取消安全模式定时器
-                callback.accept(new Event(EventType.REGISTRATION_ACCEPT, null, null, 0));
+                callback.accept(new Event(EventType.REGISTRATION_ACCEPT, null, null,null, 0));
                 break;
             case 0x42: // Registration Reject
                 if (rawPayload.length >= 2) {
                     int cause = rawPayload[1] & 0xFF;
-                    System.out.println("UE NAS: 收到 Registration Reject, cause=" + cause);
-                    callback.accept(new Event(EventType.REGISTRATION_REJECT, null, null, cause));
+                    System.out.println("UE NAS: receive Registration Reject, cause=" + cause);
+                    callback.accept(new Event(EventType.REGISTRATION_REJECT, null, null,null, cause));
                 }
                 break;
             default:
-                System.out.println("UE NAS: 未知消息类型: " + msgType);
+                System.out.println("UE NAS: Unknown message type: " + msgType);
         }
     }
 

@@ -26,7 +26,7 @@ public class TimerManager {
         long delay = getDuration(timerId);
         ScheduledFuture<?> future = scheduler.schedule(() -> onTimeout(timerId), delay, TimeUnit.MILLISECONDS);
         timers.put(timerId, future);
-        System.out.println("TimerManager: 启动定时器 T" + timerId + ", 超时=" + delay + "ms");
+        System.out.println("TimerManager: start timer T" + timerId + ", Timeout=" + delay + "ms");
     }
 
     /**
@@ -35,7 +35,7 @@ public class TimerManager {
     public void stopActiveTimers() {
         for (Map.Entry<Integer, ScheduledFuture<?>> entry : timers.entrySet()) {
             entry.getValue().cancel(false);
-            System.out.println("TimerManager: 取消定时器 T" + entry.getKey());
+            System.out.println("TimerManager: cancel timer T" + entry.getKey());
         }
         timers.clear();
     }
@@ -48,7 +48,7 @@ public class TimerManager {
         ScheduledFuture<?> future = timers.remove(timerId);
         if (future != null) {
             future.cancel(false);
-            System.out.println("TimerManager: 取消定时器 T" + timerId);
+            System.out.println("TimerManager: cancel timer T" + timerId);
         }
     }
 
@@ -58,7 +58,7 @@ public class TimerManager {
      */
     private void onTimeout(int timerId) {
         timers.remove(timerId);
-        System.err.println("TimerManager: 定时器 T" + timerId + " 到期");
+        System.err.println("TimerManager: timer T" + timerId + " matured");
         // TODO: 通知上层（如 NasLayer 或 StateMachine）执行超时处理，如重发或失败上报
     }
 
@@ -69,7 +69,7 @@ public class TimerManager {
             case T3561:
                 return DURATION_T3561_MS;
             default:
-                throw new IllegalArgumentException("未知定时器: T" + timerId);
+                throw new IllegalArgumentException("unknown timer: T" + timerId);
         }
     }
 }

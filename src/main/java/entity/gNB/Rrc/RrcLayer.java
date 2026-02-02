@@ -31,7 +31,7 @@ public class RrcLayer {
         if (data.length > 0) {
             switch (data[0]) {
                 case 0x10: // RRC Setup Request
-                    System.out.println("gNB RRC: 收到 RRC Setup Request");
+                    System.out.println("gNB RRC: receive RRC Setup Request");
                     if (state == RrcState.IDLE) {
                         state = RrcState.CONNECTING;
                         sendSetup(); // 发送 RRC Setup
@@ -41,7 +41,7 @@ public class RrcLayer {
                     }
                     break;
                 case 0x12: // RRC Setup Complete
-                    System.out.println("gNB RRC: 收到 RRC Setup Complete");
+                    System.out.println("gNB RRC: receive RRC Setup Complete");
                     if (state == RrcState.CONNECTING) {
                         state = RrcState.CONNECTED;
                         if (eventCallback != null) {
@@ -54,7 +54,7 @@ public class RrcLayer {
     }
     // 发送RRC Setup消息 (不是Setup Complete!)
     public void sendSetup() {
-        System.out.println("gNB RRC: 发送 RRC Setup");
+        System.out.println("gNB RRC: send RRC Setup");
         byte[] msg = new byte[]{0x11}; // 假设0x11=RRC Setup
         sendToPhy.accept(msg);
     }
@@ -64,7 +64,7 @@ public class RrcLayer {
      */
     public void sendSetupComplete() {
         byte[] msg = new byte[]{0x11}; // 假设 0x11 = RRCSetupComplete
-        System.out.println("gNB RRC: 发送 RRC Setup Complete");
+        System.out.println("gNB RRC: send RRC Setup Complete");
         sendToPhy.accept(msg);
     }
 }

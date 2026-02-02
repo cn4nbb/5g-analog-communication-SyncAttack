@@ -17,18 +17,18 @@ public class NgapLayer {
     }
 
     public void sendInitialUeMessage(byte[] rrcPayload) {
-        System.out.println("UE NGAP: 发送 InitialUEMessage");
-        // 打包并发送
+        System.out.println("UE NGAP: send InitialUEMessage");
+        // 打包并send
         sendToNetwork.accept(rrcPayload);
     }
 
     public void sendUplinkNas(byte[] nasPayload) {
-        System.out.println("UE NGAP: 发送 UplinkNASTransport");
+        System.out.println("UE NGAP: send UplinkNASTransport");
         sendToNetwork.accept(nasPayload);
     }
 
     public void onDownlinkNas(byte[] ngapPayload) {
-        System.out.println("UE NGAP: 收到 DownlinkNASTransport");
+        System.out.println("UE NGAP: receive DownlinkNASTransport");
         if (nasDeliveryCallback != null) nasDeliveryCallback.accept(ngapPayload);
     }
 }

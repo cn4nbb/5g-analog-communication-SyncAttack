@@ -34,7 +34,7 @@ public class PhysicalChannel {
      */
    public void sendToNgap(byte[] data) {
        scheduler.schedule(() -> {
-           System.out.println("PhysicalChannel: 上行转发到 gNB NGAP");
+           System.out.println("PhysicalChannel: uplink forward to gNB NGAP");
            for (var h : ngapHandlers) h.accept(data);
            }, DELAY_MS, TimeUnit.MILLISECONDS);
    }
@@ -44,7 +44,7 @@ public class PhysicalChannel {
      */
     public void sendToRrc(byte[] data) {
         scheduler.schedule(() -> {
-            System.out.println("PhysicalChannel: 下行转发到 UE RRC/NGAP");
+            System.out.println("PhysicalChannel: downlink forward to UE RRC/NGAP");
             for (var h : rrcHandlers) h.accept(data);
             }, DELAY_MS, TimeUnit.MILLISECONDS);
     }

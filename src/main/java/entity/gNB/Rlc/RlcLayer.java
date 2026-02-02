@@ -20,7 +20,7 @@ public class RlcLayer {
      */
     public void sendUplink(byte[] pdcpPdu) {
         transmitBuffer.offer(pdcpPdu);
-        System.out.println("gNB RLC UM: 缓存 PDU 并上交 MAC");
+        System.out.println("gNB RLC UM: cache PDU and submit MAC");
         sendToMac.accept(pdcpPdu);
     }
 
@@ -28,7 +28,7 @@ public class RlcLayer {
      * 下行：从 MAC 接收 MAC PDU，直接交给 PDCP
      */
     public void onMacDownlink(byte[] macPdu, Consumer<byte[]> deliverToPdcp) {
-        System.out.println("gNB RLC UM: 接收 MAC PDU 并交给 PDCP");
+        System.out.println("gNB RLC UM: receive MAC PDU and submit PDCP");
         deliverToPdcp.accept(macPdu);
     }
 }

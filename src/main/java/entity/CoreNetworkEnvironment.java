@@ -25,11 +25,20 @@ import entity.CoreNet.Udm;
 
 public class CoreNetworkEnvironment {
     private final Amf amf;
+    private final byte[] opVariant;
+    private final byte[] subscriberKey;
 
     public CoreNetworkEnvironment() {
-        Udm udm = new Udm();
+        byte[] subscriberKey = new byte[16];
+        byte[] opVariant = new byte[16];
+        new java.security.SecureRandom().nextBytes(subscriberKey);
+        new java.security.SecureRandom().nextBytes(opVariant);
+        // 初始化 UDM、AUSF 和 AMF
+        this.subscriberKey = subscriberKey.clone();
+        Udm udm = new Udm(subscriberKey, opVariant);
         Ausf ausf = new Ausf(udm);
-        this.amf = new Amf(ausf);
+        this.amf = new Amf(ausf, udm);
+        this.opVariant = opVariant;
     }
 
     public byte[] processNasFromGnb(byte[] ngapMessage) {
@@ -42,5 +51,12 @@ public class CoreNetworkEnvironment {
             }
         }
         return new byte[0];
+    }
+    public byte[] getOpVariant() {
+        return opVariant.clone();
+    }
+    /** ← 新增：供 Simulator 使用 */
+    public byte[] getSubscriberKey() {
+        return subscriberKey.clone();
     }
 }

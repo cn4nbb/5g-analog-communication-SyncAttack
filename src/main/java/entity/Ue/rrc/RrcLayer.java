@@ -38,7 +38,7 @@ public class RrcLayer {
 //        timerManager.startTimer(TimerManager.T3560);
         if (state == RrcState.IDLE) {
             state = RrcState.CONNECTING;
-            System.out.println("UE RRC: 发送 RRC Setup Request");
+            System.out.println("UE RRC: send RRC Setup Request");
             sendToPhysical.accept(new byte[]{0x10}); // 0x10 = RRC Setup Request
             timerManager.startTimer(TimerManager.T3560);
         }
@@ -54,7 +54,7 @@ public class RrcLayer {
         if (data.length > 0) {
             switch (data[0]) {
                 case 0x11: // RRC Setup
-                    System.out.println("UE RRC: 收到 RRC Setup");
+                    System.out.println("UE RRC: receive RRC Setup");
                     sendSetupComplete();
                     break;
             }
@@ -66,7 +66,7 @@ public class RrcLayer {
     private void sendSetupComplete() {
         if (state == RrcState.CONNECTING) {
             state = RrcState.CONNECTED;
-            System.out.println("UE RRC: 发送 RRC Setup Complete");
+            System.out.println("UE RRC: send RRC Setup Complete");
             sendToPhysical.accept(new byte[]{0x12}); // 0x12 = RRC Setup Complete
             timerManager.cancelTimer(TimerManager.T3560); // 取消定时器
 

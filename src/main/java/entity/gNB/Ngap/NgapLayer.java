@@ -20,7 +20,7 @@ public class NgapLayer {
 //        System.out.println("gNB NGAP: 收到上行 NAS, 转发到 AMF");
 //        byte[] resp = coreEnv.processNasFromGnb(nasPayload);
 //        sendToPhy.accept(resp);
-        System.out.println("gNB NGAP: 收到上行 NAS, 转发到 AMF");
+        System.out.println("gNB NGAP: receive uplink NAS, forward to AMF");
         // 这里需要将消息封装为InitialUEMessage
         byte[] initialMsg = new byte[nasPayload.length + 2];
         initialMsg[0] = 0x00; // InitialUEMessage标识

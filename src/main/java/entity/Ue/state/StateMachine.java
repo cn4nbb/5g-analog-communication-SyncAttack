@@ -33,7 +33,7 @@ public class StateMachine {
             rrcState = RrcState.CONNECTING;
             System.out.println("SM: RRC -> CONNECTING");
         } else {
-            System.err.println("SM: 无法从 " + rrcState + " 进入 CONNECTING");
+            System.err.println("SM: unable " + rrcState + " enter CONNECTING");
         }
         logStates();
     }
@@ -43,7 +43,7 @@ public class StateMachine {
             rrcState = RrcState.CONNECTED;
             System.out.println("SM: RRC -> CONNECTED");
         } else {
-            System.err.println("SM: 无法从 " + rrcState + " 进入 CONNECTED");
+            System.err.println("SM: unable " + rrcState + " enter CONNECTED");
         }
         logStates();
     }
@@ -61,7 +61,7 @@ public class StateMachine {
             nasState = NasState.REGISTRATION_PENDING;
             System.out.println("SM: NAS -> REGISTRATION_PENDING");
         } else {
-            System.err.println("SM: 无法从 " + nasState + " 进入 REGISTRATION_PENDING");
+            System.err.println("SM: unable " + nasState + " enter REGISTRATION_PENDING");
         }
         logStates();
     }
@@ -71,7 +71,7 @@ public class StateMachine {
             nasState = NasState.REGISTERED;
             System.out.println("SM: NAS -> REGISTERED");
         } else {
-            System.err.println("SM: 无法从 " + nasState + " 进入 REGISTERED");
+            System.err.println("SM: unable " + nasState + " enter REGISTERED");
         }
         logStates();
     }
@@ -82,7 +82,7 @@ public class StateMachine {
             nasState = NasState.SECURITY_ACTIVE;
             System.out.println("SM: NAS -> SECURITY_ACTIVE");
         } else {
-            System.err.println("SM: 无法从 " + nasState + " 进入 SECURITY_ACTIVE");
+            System.err.println("SM: unable " + nasState + " enter SECURITY_ACTIVE");
         }
         logStates();
     }

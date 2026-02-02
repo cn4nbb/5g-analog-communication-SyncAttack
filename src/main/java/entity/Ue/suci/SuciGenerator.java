@@ -55,7 +55,7 @@ public class SuciGenerator {
 
             return concat(version, concat(keyId, concat(ephPub, encryptedSupi)));
         } catch (Exception e) {
-            System.err.println("SUCI 生成失败: " + e.getMessage());
+            System.err.println("SUCI Failed to generate: " + e.getMessage());
             // 失败时返回明文SUPI
             return ("SUPI:" + supi).getBytes();
         }
@@ -66,13 +66,13 @@ public class SuciGenerator {
             // TODO: 填入实际 Base64 编码的 HN 公钥
             String b64Key = System.getProperty("hn.publicKey.base64", "");
             if (b64Key == null || b64Key.isEmpty()) {
-                throw new IllegalArgumentException("未配置 HN 公钥");
+                throw new IllegalArgumentException("HN public key not configured");
             }
             byte[] keyBytes = Base64.getDecoder().decode(b64Key);
             KeyFactory kf = KeyFactory.getInstance(EC_ALGO);
             return kf.generatePublic(new X509EncodedKeySpec(keyBytes));
         } catch (Exception e) {
-            System.err.println("加载 HN 公钥失败，将使用临时密钥: " + e.getMessage());
+            System.err.println("Failed to load HN public key, a temporary key will be used: " + e.getMessage());
             // fallback: 生成临时 EC 密钥对，仅测试用途
             try {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance(EC_ALGO);
@@ -80,7 +80,7 @@ public class SuciGenerator {
                 KeyPair kp = kpg.generateKeyPair();
                 return kp.getPublic();
             } catch (GeneralSecurityException ex) {
-                throw new RuntimeException("无法生成临时 EC 公钥", ex);
+                throw new RuntimeException("Unable to generate temporary EC public key", ex);
             }
         }
     }

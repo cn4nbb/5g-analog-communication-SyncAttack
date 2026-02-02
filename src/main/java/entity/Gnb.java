@@ -9,37 +9,38 @@ import entity.gNB.Rlc.RlcLayer;
 import entity.gNB.Rrc.RrcLayer;
 
 public class Gnb {
-    private final RrcLayer         rrc;
-    private final NgapLayer        ngap;
-    private final PhysicalChannel  upControl;    // UE -> gNB
-    private final PhysicalChannel  downControl;  // gNB -> UE
+//    private final RrcLayer         rrc;
+//    private final NgapLayer        ngap;
+//    private final PhysicalChannel  upControl;    // UE -> gNB
+//    private final PhysicalChannel  downControl;  // gNB -> UE
 
     private final PhysicalLayer    userPhy;
     private final MacLayer         macData;
     private final RlcLayer         rlcData;
     private final PdcpLayer        pdcpData;
+    private final CoreNetworkEnvironment coreNetwork;
 
     public Gnb(CoreNetworkEnvironment coreNetwork,
-               PhysicalChannel upControl,
-               PhysicalChannel downControl,
+//               PhysicalChannel upControl,
+//               PhysicalChannel downControl,
                PhysicalLayer userPhy) {
-        this.upControl   = upControl;
-        this.downControl = downControl;
+//        this.upControl   = upControl;
+//        this.downControl = downControl;
 
         // 控制面
-        this.rrc  = new RrcLayer();
-        this.ngap = new NgapLayer(coreNetwork);
+//        this.rrc  = new RrcLayer();
+//        this.ngap = new NgapLayer(coreNetwork);
 
         // RRC：上行到 gNB
-        upControl.registerToRrc(rrc::onPhyMessage);
+        //upControl.registerToRrc(rrc::onPhyMessage);
         // RRC：gNB 下行到 UE
-        rrc.registerSendHandler(msg -> downControl.sendToRrc(msg));
+        //rrc.registerSendHandler(msg -> downControl.sendToRrc(msg));
 
         // NGAP：上行到 gNB
-        upControl.registerToNgap(ngap::onPhyMessage);
+        //upControl.registerToNgap(ngap::onPhyMessage);
         // NGAP：gNB 下行到 UE
-        ngap.registerSendHandler(msg -> downControl.sendToNgap(msg));
-
+        //ngap.registerSendHandler(msg -> downControl.sendToNgap(msg));
+        this.coreNetwork = coreNetwork;
         // 用户面
         this.userPhy = userPhy;
         this.macData = new MacLayer(userPhy::sendUplink);
@@ -56,28 +57,34 @@ public class Gnb {
         );
     }
 
-    public void start() {
-//        System.out.println("gNB: 控制面启动，等待 UE 发起 RRC Setup Request");
-//        rrc.registerEventCallback(evt -> {
-//            if (evt == RrcLayer.RrcEvent.SETUP_REQUEST) {
-//                System.out.println("gNB: 收到 RRC Setup Request，发回 Setup Complete");
-//                rrc.sendSetupComplete();
-//            }
-//        });
-        System.out.println("gNB: 控制面启动，等待 UE 发起 RRC Setup Request");
+    /**
+     * 为一对控制面信道注册 RRC/NGAP，上行 ue2gnb, 下行 gnb2ue
+     */
+    public void addUeConnection(PhysicalChannel ue2gnb, PhysicalChannel gnb2ue) {
+        //1、每个连接的RRC
+        RrcLayer rrc = new RrcLayer();
+        // RRC
+        ue2gnb.registerToRrc(rrc::onPhyMessage);
+        rrc.registerSendHandler(msg -> gnb2ue.sendToRrc(msg));
+        // 可选日志
         rrc.registerEventCallback(evt -> {
             if (evt == RrcLayer.RrcEvent.SETUP_REQUEST) {
-                System.out.println("gNB: 处理 RRC Setup Request");
-                // RRC Setup 已在 RrcLayer 中发送
+                System.out.println("gNB[" + ue2gnb.hashCode() + "]: receive RRC Setup Request");
             } else if (evt == RrcLayer.RrcEvent.SETUP_COMPLETE) {
-                System.out.println("gNB: RRC连接建立完成");
-                // 后续可以在这里处理NAS消息转发等
+                System.out.println("gNB[" + ue2gnb.hashCode() + "]: RRC connection completed");
             }
         });
-
+        // 立即启动：监听上行 RRC Setup
+        System.out.println("gNB: has added UE RRC connection " + ue2gnb.hashCode());
+        //2、每个连接的 NGAP
+        NgapLayer ngap = new NgapLayer(coreNetwork);
+        ue2gnb.registerToNgap(ngap::onPhyMessage);
+        ngap.registerSendHandler(msg -> gnb2ue.sendToNgap(msg));
+        System.out.println("gNB: has added UE NGAP connection " + ue2gnb.hashCode());
     }
 
+
     private void handleUserData(byte[] payload) {
-        System.out.println("gNB App: 收到用户面数据 = " + new String(payload));
+        System.out.println("gNB App: Received user profile data = " + new String(payload));
     }
 }

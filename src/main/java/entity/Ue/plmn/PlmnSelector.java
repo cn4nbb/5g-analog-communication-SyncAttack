@@ -24,22 +24,22 @@ public class PlmnSelector {
      * @param cause5gmm 5GMM Reject 原因码
      */
     public void handleReject(int cause5gmm) {
-        System.out.println("PLMN: 收到注册拒绝原因码=" + cause5gmm);
+        System.out.println("PLMN: Received registration rejection reason code=" + cause5gmm);
         switch (cause5gmm) {
             case 7:
                 // 禁用 5G，只能使用 4G 及以下
                 fiveGDisabled = true;
-                System.out.println("PLMN: 5G 网络已禁用，将切换到 LTE 或以下。");
+                System.out.println("PLMN: 5G network is disabled and will switch to LTE or below.");
                 break;
             case 11:
                 // 禁用当前 PLMN
                 // 假设当前正在尝试的 PLMN 在可用列表中的第一个
                 String current = availablePlmns.iterator().next();
                 forbiddenPlmns.add(current);
-                System.out.println("PLMN: 禁用 PLMN=" + current + ", 将不再尝试该 PLMN。");
+                System.out.println("PLMN: disable PLMN=" + current + ", will no longer try this PLMN.");
                 break;
             default:
-                System.out.println("PLMN: 未知的 Reject 原因，忽略。");
+                System.out.println("PLMN: unknown Reject reason，Ignore.");
         }
     }
 

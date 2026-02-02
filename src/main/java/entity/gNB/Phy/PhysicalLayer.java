@@ -23,7 +23,7 @@ public class PhysicalLayer {
     /** 上行：UE MAC 发来的 PDU */
     public void sendUplink(byte[] macPdu) {
         scheduler.schedule(() -> {
-            System.out.println("PHY: 上行转发到 gNB MAC");
+            System.out.println("PHY: uplink forward to gNB MAC");
             toMac.accept(macPdu);
         }, 50, TimeUnit.MILLISECONDS);
     }
@@ -31,7 +31,7 @@ public class PhysicalLayer {
     /** 下行：gNB MAC 发来的 PDU */
     public void sendDownlink(byte[] macPdu) {
         scheduler.schedule(() -> {
-            System.out.println("PHY: 下行转发到 UE MAC");
+            System.out.println("PHY: downlink forward to UE MAC");
             toUeMac.accept(macPdu);
         }, 50, TimeUnit.MILLISECONDS);
     }
