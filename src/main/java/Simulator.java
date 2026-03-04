@@ -4,15 +4,35 @@ import entity.gNB.Phy.PhysicalChannel;
 import entity.gNB.Phy.PhysicalLayer;
 import entity.suciattack.SuciAttackSimulator;
 import entity.visual.BroadcastAttackDiagram;
+import entity.visual.SuciAttackDiagram;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class Simulator {
 
     public static void main(String[] args) throws Exception {
-       runSUCIAttack();
+
+        if (args.length == 0) {
+            return;
+        }
+
+        String mode = args[0].toLowerCase();
+
+        switch (mode) {
+            case "broadcast":
+                runBroadCastAttack();
+                break;
+            case "suci":
+                runSUCIAttack();
+                break;
+            default:
+                System.out.println("未知指令: " + mode);
+                System.out.println("可用指令: broadcast | suci");
+        }
     }
 
     /**
@@ -161,6 +181,10 @@ public class Simulator {
             }
         }, true));
 
+        // 显示SUCI攻击界面
+        SuciAttackDiagram.showDiagram();
+        SuciAttackDiagram.redirectSystemOut(logStream);
+
         // === 构建仿真环境 ===
         PhysicalLayer userPlane = new PhysicalLayer();
         CoreNetworkEnvironment core = new CoreNetworkEnvironment();
@@ -175,12 +199,92 @@ public class Simulator {
 
         // === 执行SUCI攻击 ===
         SuciAttackSimulator attack = new SuciAttackSimulator(core, gnb, userPlane);
-        attack.runSuciRandomnessDemo(supis, regMgr);
+        Set<String> weakUes = attack.runSuciRandomnessDemo(supis, regMgr);
+
+        // 将弱随机UE传入广播攻击
+        runBroadCastAttackForWeakUEs(weakUes);
 
         Thread.sleep(2000);
         System.out.println("=== SUCI Simulation End ===");
 
         logStream.close();
         System.exit(0);
+    }
+
+    public static void runBroadCastAttackForWeakUEs(Set<String> weakUes) throws Exception {
+
+        System.out.println("\n========== 针对弱随机UE执行广播重放攻击 ==========\n");
+
+        PhysicalLayer userPlane = new PhysicalLayer();
+        CoreNetworkEnvironment core = new CoreNetworkEnvironment();
+        Gnb gnb = new Gnb(core, userPlane);
+
+        RegistrationManager regMgr =
+                new RegistrationManager("registration_results.csv");
+
+        if (weakUes.isEmpty()) {
+            System.out.println("未检测到弱随机UE，广播攻击取消。");
+            return;
+        }
+
+        Iterator<String> iterator = weakUes.iterator();
+
+        // 1️⃣ 选择第一个弱随机 UE 作为“被记录向量的源”
+        String supi0 = iterator.next();
+
+        PhysicalChannel ue2gnb0 = new PhysicalChannel();
+        PhysicalChannel gnb2ue0 = new PhysicalChannel();
+        gnb.addUeConnection(ue2gnb0, gnb2ue0);
+
+        BroadcastAttackSimulator attacker =
+                new BroadcastAttackSimulator(gnb2ue0);
+        attacker.addVictimChannel(gnb2ue0);
+
+        UEs ue0 = new UEs(
+                supi0,
+                core.getSubscriberKey(),
+                core.getOpVariant(),
+                gnb2ue0, ue2gnb0,
+                userPlane
+        );
+
+        ue0.registerRegistrationListener(regMgr);
+        ue0.start();
+
+        // 等待完成一次完整 AKA
+        Thread.sleep(3000);
+
+        // 2️⃣ 启动广播攻击
+        attacker.startAttack(0, 2000);
+
+        // 3️⃣ 启动其余弱随机 UE
+        while (iterator.hasNext()) {
+
+            String supi = iterator.next();
+
+            PhysicalChannel ue2gnb = new PhysicalChannel();
+            PhysicalChannel gnb2ue = new PhysicalChannel();
+            gnb.addUeConnection(ue2gnb, gnb2ue);
+
+            attacker.addVictimChannel(gnb2ue);
+
+            UEs ue = new UEs(
+                    supi,
+                    core.getSubscriberKey(),
+                    core.getOpVariant(),
+                    gnb2ue, ue2gnb,
+                    userPlane
+            );
+
+            ue.registerRegistrationListener(regMgr);
+            ue.start();
+
+            Thread.sleep(500);
+        }
+
+        Thread.sleep(10000);
+        attacker.stopAttack();
+
+        System.out.println("\n========== 广播攻击结束 ==========\n");
     }
 }
